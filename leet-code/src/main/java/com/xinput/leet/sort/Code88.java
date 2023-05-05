@@ -38,7 +38,7 @@ import java.util.Arrays;
  * <p>
  * 进阶：你可以设计实现一个时间复杂度为 O(m + n) 的算法解决此问题吗？
  */
-public class LeetCode88 {
+public class Code88 {
     public static void main(String[] args) {
         int[] a = new int[]{1, 3, 5, 0, 0, 0, 0};
         int[] b = new int[]{0, 2, 4, 6};
@@ -66,22 +66,22 @@ public class LeetCode88 {
      */
     public static void merge2(int[] nums1, int m, int[] nums2, int n) {
         for (int i1 = nums1.length - 1; i1 >= 0; i1--) {
-            Integer num1 =  m < 1 ? null : nums1[m - 1];
-            Integer num2 = n < 1 ? null : nums2[n -1];
-            if( null != num1 || null != num2){
-                if(null == num1){
+            Integer num1 = m < 1 ? null : nums1[m - 1];
+            Integer num2 = n < 1 ? null : nums2[n - 1];
+            if (null != num1 || null != num2) {
+                if (null == num1) {
                     nums1[i1] = num2;
-                    n = n -1;
-                }else if(null == num2){
+                    n = n - 1;
+                } else if (null == num2) {
                     nums1[i1] = num1;
-                    m = m -1;
-                }else {
-                    if(num1 > num2){
+                    m = m - 1;
+                } else {
+                    if (num1 > num2) {
                         nums1[i1] = num1;
-                        m = m -1;
-                    }else {
+                        m = m - 1;
+                    } else {
                         nums1[i1] = num2;
-                        n = n -1;
+                        n = n - 1;
                     }
                 }
             }
