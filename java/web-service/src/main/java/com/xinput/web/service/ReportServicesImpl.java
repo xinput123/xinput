@@ -9,8 +9,8 @@ import javax.jws.WebService;
 @WebService(endpointInterface = "com.xinput.web.service.ReportServices", serviceName = "ReportServices")
 public class ReportServicesImpl implements ReportServices {
 
-  @Override
-  public String report(String message) {
-    return "report: " + message;
-  }
+    @Override
+    public String report(String message) {
+        return "report: " + message;
+    }
 }

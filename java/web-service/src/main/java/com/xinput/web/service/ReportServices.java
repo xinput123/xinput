@@ -8,5 +8,5 @@ import javax.jws.WebService;
  */
 @WebService
 public interface ReportServices {
-  String report(String message);
+    String report(String message);
 }

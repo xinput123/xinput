@@ -10,34 +10,34 @@ import com.google.common.eventbus.EventBus;
  */
 public class EventBusCenter {
 
-  private static EventBus eventBus = new EventBus();
+    private static EventBus eventBus = new EventBus();
 
-  public EventBusCenter() {
-  }
+    public EventBusCenter() {
+    }
 
-  public static EventBus getInstance() {
-    return eventBus;
-  }
+    public static EventBus getInstance() {
+        return eventBus;
+    }
 
-  /**
-   * 注册订阅者以订阅消息
-   */
-  public static void register(Object obj) {
-    eventBus.register(obj);
-  }
+    /**
+     * 注册订阅者以订阅消息
+     */
+    public static void register(Object obj) {
+        eventBus.register(obj);
+    }
 
-  /**
-   * 注销所有已注册的订户方法
-   */
-  public static void unregister(Object obj) {
-    eventBus.unregister(obj);
-  }
+    /**
+     * 注销所有已注册的订户方法
+     */
+    public static void unregister(Object obj) {
+        eventBus.unregister(obj);
+    }
 
-  /**
-   * 将事件发布到所有注册的订户.
-   * s事件发布到所有订阅者后，无论订阅者抛出任何异常，此方法都将成功返回
-   */
-  public static void post(Object obj) {
-    eventBus.post(obj);
-  }
+    /**
+     * 将事件发布到所有注册的订户.
+     * s事件发布到所有订阅者后，无论订阅者抛出任何异常，此方法都将成功返回
+     */
+    public static void post(Object obj) {
+        eventBus.post(obj);
+    }
 }
