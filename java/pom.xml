@@ -13,6 +13,7 @@
         <module>spi</module>
         <module>web-service</module>
         <module>web-client</module>
+        <module>es</module>
     </modules>
 
     <properties>
