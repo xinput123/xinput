@@ -7,6 +7,7 @@ import com.xinput.entity.ProductItem;
 import com.xinput.util.Factory;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -39,12 +40,14 @@ public class CompletableFutureV1002 {
             new ThreadPoolExecutor.CallerRunsPolicy());
 
     public static void main(String[] args) {
-        List<ProductItem> productItems = createProductItemList(15);
+//        List<ProductItem> productItems = createProductItemList(15);
 //        validateProductItem1(productItems);
-        validateProductItem2(productItems);
+//        validateProductItem2(productItems);
+//        validateProductItem3(productItems);
+        priceComparison("ipone13");
     }
 
-    public static void validateProductItem1(List<ProductItem> productItems) {
+    static void validateProductItem1(List<ProductItem> productItems) {
         Stopwatch sw = Stopwatch.createStarted();
         List<CompletableFuture<String>> futures = Lists.newArrayListWithCapacity(productItems.size());
         productItems.forEach(productItem -> futures.add(CompletableFuture.supplyAsync(() -> validate(productItem), executor)));
@@ -66,7 +69,7 @@ public class CompletableFutureV1002 {
         System.out.println("validateProductItem1 cost: " + sw.elapsed().getSeconds());
     }
 
-    public static void validateProductItem2(List<ProductItem> productItems) {
+    static void validateProductItem2(List<ProductItem> productItems) {
         Stopwatch sw = Stopwatch.createStarted();
         List<CompletableFuture<String>> futures = Lists.newArrayListWithCapacity(productItems.size());
         productItems.forEach(productItem -> futures.add(CompletableFuture.supplyAsync(() -> validate(productItem), executor)));
@@ -87,17 +90,34 @@ public class CompletableFutureV1002 {
         List<String> results = allFutureList.join();
         System.out.println(results);
         sw.stop();
-        System.out.println("validateProductItem1 cost: " + sw.elapsed().getSeconds());
+        System.out.println("validateProductItem2 cost: " + sw.elapsed().getSeconds());
     }
 
-    public static List<ProductItem> createProductItemList(int size) {
+    static void validateProductItem3(List<ProductItem> productItems) {
+        Stopwatch sw = Stopwatch.createStarted();
+        List<CompletableFuture<String>> futures = Lists.newArrayListWithCapacity(productItems.size());
+        productItems.forEach(productItem -> futures.add(CompletableFuture.supplyAsync(() -> validate(productItem), executor)));
+
+        // 对每个 CompletableFuture 进行 join(), 同样可以拿到所有的结果
+        List<String> results = futures.stream()
+                .map(CompletableFuture::join)
+                .filter(result -> StringUtils.isNotBlank(result))
+                .collect(Collectors.toList());
+
+        // 获取最终执行的结果
+        System.out.println(results);
+        sw.stop();
+        System.out.println("validateProductItem3 cost: " + sw.elapsed().getSeconds());
+    }
+
+    static List<ProductItem> createProductItemList(int size) {
         List<ProductItem> productItemList = Lists.newArrayListWithCapacity(size);
         for (int i = 1; i < size + 1; i++) {
             Long productId = Long.valueOf(i);
             Double price = Double.valueOf(i);
             String productName = "商品-" + i;
             String desc = "这是商品-" + i;
-            int sleep = Factory.getRandom(10);
+            int sleep = Factory.getRandom(5);
             if (i == 2) {
                 // 名称过长
                 productItemList.add(new ProductItem(productId, "这是来自全宇宙最闪耀的商品", price, "好用的产品", sleep));
@@ -114,7 +134,7 @@ public class CompletableFutureV1002 {
         return productItemList;
     }
 
-    public static String validate(ProductItem productItem) {
+    static String validate(ProductItem productItem) {
         Factory.sleep(productItem.getSleep());
         if (productItem.getPrice() <= 0) {
             return "价格不合理 -> " + productItem.toString();
@@ -130,5 +150,52 @@ public class CompletableFutureV1002 {
 
 
         return "";
+    }
+
+    /**
+     * 从多个平台比较价格
+     */
+    static void priceComparison(String productName) {
+        Stopwatch sw = Stopwatch.createStarted();
+        CompletableFuture<Double> cf1 = CompletableFuture.supplyAsync(() -> getPriceFromTaoBao(productName), executor);
+        CompletableFuture<Double> cf2 = CompletableFuture.supplyAsync(() -> getPriceFromJD(productName), executor);
+        CompletableFuture<Double> cf3 = CompletableFuture.supplyAsync(() -> getPriceFromPDD(productName), executor);
+
+        CompletableFuture<Void> cf = CompletableFuture.allOf(cf1, cf2, cf3).thenRun(() -> {
+            try {
+                Double taoBaoPrice = cf1.get();
+                Double jdPrice = cf2.get();
+                Double pddPrice = cf3.get();
+
+                System.out.println("Price comparison for " + productName);
+                System.out.println("TaoBao: ￥" + taoBaoPrice);
+                System.out.println("JD: ￥" + jdPrice);
+                System.out.println("PDD: ￥" + pddPrice);
+                List<Double> prices = Lists.newArrayList(taoBaoPrice, jdPrice, pddPrice);
+                Double lowestPrice = Collections.min(prices);
+                System.out.println("Lowest price: ￥" + lowestPrice);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        cf.join();
+        sw.stop();
+        System.out.println("priceComparison cost: " + sw.elapsed().getSeconds());
+    }
+
+    static double getPriceFromTaoBao(String productName) {
+        Factory.sleep(3);
+        return 8000;
+    }
+
+    static double getPriceFromJD(String productName) {
+        Factory.sleep(5);
+        return 7500;
+    }
+
+    static double getPriceFromPDD(String productName) {
+        Factory.sleep(4);
+        return 7000;
     }
 }
