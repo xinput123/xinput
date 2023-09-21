@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:xinput.xx@gmail.com">xinput</a>
  * @since
  */
-public class CountDownLatchDemo {
+public class CountDownLatchDemo01 {
 
   private static CountDownLatch countDownLatch = new CountDownLatch(5);
 

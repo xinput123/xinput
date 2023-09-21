@@ -17,6 +17,8 @@
         <module>file</module>
         <module>juc</module>
         <module>method</module>
+        <module>rpc_study</module>
+        <module>rpc_study/grpc-demo</module>
     </modules>
 
     <properties>

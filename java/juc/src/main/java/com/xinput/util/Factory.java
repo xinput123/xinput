@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 public class Factory {
     public static void sleep(int second) {
         try {
-            System.out.println("Thread: " + Thread.currentThread().getName() + " sleep: " + second);
+//            System.out.println("Thread: " + Thread.currentThread().getName() + " sleep: " + second);
             TimeUnit.SECONDS.sleep(second);
         } catch (InterruptedException e) {
             e.printStackTrace();
