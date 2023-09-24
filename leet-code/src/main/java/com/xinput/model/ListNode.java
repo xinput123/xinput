@@ -30,14 +30,16 @@ public class ListNode {
         }
     }
 
-
     public void print() {
-        // 打印方法，直接打印data数据，并判断是否有下个节点，有的话就继续打印
-        if (this.next == null) {
-            System.out.println(this.val);
-        } else {
-            System.out.print(this.val + " --> ");
-            this.next.print();
+        ListNode node = this;
+        while (node != null) {
+            if (node.next != null) {
+                System.out.print(node.val + " --> ");
+            } else {
+                System.out.print(node.val);
+            }
+            node = node.next;
         }
+        System.out.println();
     }
 }
