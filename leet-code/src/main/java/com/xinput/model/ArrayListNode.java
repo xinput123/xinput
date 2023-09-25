@@ -1,7 +1,7 @@
 package com.xinput.model;
 
 /**
- * 可通过下边操作的链表
+ * 单向链表
  */
 public class ArrayListNode {
 
@@ -16,15 +16,28 @@ public class ArrayListNode {
         head = new ListNode(-1);
     }
 
-    public boolean addHeadNode(int val) {
-        return addNode(0, val);
+    public int get(int index) {
+        if (index < 0 || index >= size) {
+            return -1;
+        }
+
+        ListNode cur = head;
+        for (int i = 0; i <= index; i++) {
+            cur = cur.next;
+        }
+
+        return cur.val;
     }
 
-    public boolean addTailNode(int val) {
-        return addNode(size, val);
+    public boolean addAtHead(int val) {
+        return addAtIndex(0, val);
     }
 
-    public boolean addNode(int index, int val) {
+    public boolean addAtTail(int val) {
+        return addAtIndex(size, val);
+    }
+
+    public boolean addAtIndex(int index, int val) {
         if (index < 0 || index > size) {
             return false;
         }
@@ -42,13 +55,14 @@ public class ArrayListNode {
         newNode.next = pre.next;
         pre.next = newNode;
         size++;
+        System.out.println(String.format("在[%s]位置插入链表[%s]", index, val));
         return true;
     }
 
     /**
      * 删除节点
      */
-    public boolean delNode(int index) {
+    public boolean deleteAtIndex(int index) {
         if (index < 0 || index > size) {
             return false;
         }
@@ -62,5 +76,26 @@ public class ArrayListNode {
         pre.next = pre.next.next;
         size--;
         return true;
+    }
+
+    public void print() {
+        ListNode node = head.next;
+
+        boolean isNotNull = node != null;
+        if (isNotNull) {
+            System.out.print("链表: [");
+        }
+        while (node != null) {
+            if (node.next != null) {
+                System.out.print(node.val + " --> ");
+            } else {
+                System.out.print(node.val);
+            }
+            node = node.next;
+        }
+        if (isNotNull) {
+            System.out.print("]");
+        }
+        System.out.println("\n");
     }
 }
