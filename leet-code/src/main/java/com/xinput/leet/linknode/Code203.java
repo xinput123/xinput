@@ -6,7 +6,7 @@ import com.xinput.util.NodeUtils;
 
 /**
  * https://leetcode.cn/problems/remove-linked-list-elements/
- * 213. 移除链表元素
+ * 203. 移除链表元素
  */
 public class Code203 {
 
