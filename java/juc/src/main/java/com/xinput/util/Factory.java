@@ -21,6 +21,14 @@ public class Factory {
         }
     }
 
+    public static void sleepMillis(long millis) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static int getRandom(int max) {
         if (max < 1) {
             return 1;
